@@ -9,12 +9,19 @@ OBJCOPYFLAGS = -R .note -R .comment -R .note.gnu.build-id
 all:	shell printa printb
 
 
-image:	shell printa printb
-	mkdir -p image
-	cp shell printa printb CATME ./image
-	genromfs -f initrd.romfs -d image -V VMWos
-	echo "unsigned char initrd_image[]={" > initrd.h
-	xxd -i < initrd.romfs >> initrd.h
+# Make ROMFS image header
+# image:	shell printa printb
+# 	mkdir -p image
+# 	cp shell printa printb CATME ./image
+# 	genromfs -f initrd.romfs -d image -V VMWos
+# 	echo "unsigned char initrd_image[]={" > initrd.h
+# 	xxd -i < initrd.romfs >> initrd.h
+# 	echo "};" >> initrd.h
+
+# Make FAT image header
+image: test.img
+	echo "unsigned char initrd_image[] = {" > initrd.h
+	xxd -i < test.img >> initrd.h
 	echo "};" >> initrd.h
 
 shell:	shell.elf
