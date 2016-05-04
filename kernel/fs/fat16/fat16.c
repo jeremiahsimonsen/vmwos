@@ -23,8 +23,26 @@ static uint32_t data_start;
 
 static FAT16BootSector bootSector;
 
+/* Just use the file entry offset as the inode.
+	Note: only looking in root directory */
 int32_t fat16_get_inode(const char *name) {
+	int i;
+	int32_t inode = 0;
+	uint32_t offset = root_start;
+	FAT16DirEntry entry;
 
+	/* Scan through root dir looking for matching filename */
+	for (i = 0; i < bootSector.num_root_entries; i++) {
+		inode = offset;
+
+		ramdisk_read(offset, sizeof(FAT16DirEntry), &entry);
+
+		if (!strncmp(name, entry.filename, 8)) {
+			return inode;
+		}
+	}
+
+	return -1;
 }
 
 

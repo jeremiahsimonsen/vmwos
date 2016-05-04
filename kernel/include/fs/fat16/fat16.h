@@ -62,7 +62,7 @@ typedef struct {
 								///<   	yyyyyyymmmmddddd (year 0 = 1980)
 	uint16_t 	start_cluster;	///< Start of file in clusters
 	uint32_t 	size;			///< File size in bytes
-} __attribute__((packed)) FAT16_DirEntry;
+} __attribute__((packed)) FAT16DirEntry;
 
 int32_t fat16_get_inode(const char *name);
 int32_t fat16_read_file(uint32_t inode, uint32_t offset, 
